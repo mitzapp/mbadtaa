@@ -1,2 +1,1 @@
-# mbadtaa
-Bot discord
+# MBadTaa
