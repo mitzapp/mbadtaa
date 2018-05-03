@@ -61,38 +61,31 @@ bot.on('message', message => {
     message.channel.send('Me revoila !!') }
 })
 
-
 bot.on('message', message => {
-
-  if (message.content.startsWith('!play')) {
-    // On récupère le premier channel audio du serveur
-    let voiceChannel = message.guild.channels
-      .filter(function (channel) { return channel.type === 'voice' })
-      .first()
-    // On récupère les arguments de la commande 
-    // il faudrait utiliser une expression régulière pour valider le lien youtube
-    let args = message.content.split('confirm')
-    // On rejoint le channel audio
-    voiceChannel
-      .join()
-      .then(function (connection) {
-        // On démarre un stream à partir de la vidéo youtube
-        let stream = YoutubeStream(args[1])
-        stream.on('error', function () {
-          message.reply("Je n'ai pas réussi à lire cette vidéo :(")
-          connection.disconnect()
-        })
-        // On envoie le stream au channel audio
-        // Il faudrait ici éviter les superpositions (envoie de plusieurs vidéo en même temps)
-        connection
-          .playStream(stream)
-          .on('end', function () {
-            connection.disconnect()
-          })
-      })
-  }
-
-})
+ 
+ 
+var userData = JSON.parse(fs.readFileSync('Storage/userData.json', 'utf-8'));
+var sender = message.author;
+var msg = message.content.toUpperCase();
+var prefix = '>'
+ 
+ 
+if(msg === prefix + 'USERSTATS') {
+    message.channel.send('Vous avez envoyé **' + userData[sender.id].messagesSent + '** messages !' )
+}
+ 
+ 
+if (!userData[sender.id]) userData[sender.id] = {
+    messageSent: 0
+}
+ 
+userData[sender.id].messagesSent++;
+ 
+fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
+    if (err) console.error(err);
+});
+ 
+});
 
 
 bot.login(process.env.TOKEN)
