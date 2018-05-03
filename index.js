@@ -71,7 +71,7 @@ bot.on('message', message => {
       .first()
     // On récupère les arguments de la commande 
     // il faudrait utiliser une expression régulière pour valider le lien youtube
-    let args = message.content.split(' ')
+    let args = message.content.split('confirm')
     // On rejoint le channel audio
     voiceChannel
       .join()
